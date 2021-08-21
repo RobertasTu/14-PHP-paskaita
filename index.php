@@ -7,6 +7,13 @@
 // 1.Prisijungimas
 
 require_once('connection.php');
+
+
+//   header('location:klientai.php');
+
+require_once("includes.php"); 
+
+
 //connection.php faile , index.php faile dabar yra pasiekiami
 
 $sql = "SELECT * FROM `klientai` WHERE 1"; //tekstas

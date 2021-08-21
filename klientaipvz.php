@@ -1,6 +1,7 @@
 <?php 
 
 require_once('connection.php');
+require_once("includes.php"); 
 
 $sql = "SELECT * FROM `klientai` WHERE ID=12"; 
 $rezultatas = $prisijungimas->query($sql); 
