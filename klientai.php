@@ -29,7 +29,22 @@ require_once('connection.php');
 
 require_once("includes.php"); 
 ?>
+<div class="container">
+<?php 
 
+if(!isset($_COOKIE["prisijungti"])) { 
+    header("Location: login.php");    
+} else {
+    echo "Sveikas prisijunges";
+    echo "<form action='klientai.php' method ='get'>";
+    echo "<button class='btn btn-primary' type='submit' name='logout'>Logout</button>";
+    echo "</form>";
+    if(isset($_GET["logout"])) {
+        setcookie("prisijungti", "", time() - 3600, "/");
+        header("Location: login.php");
+    }
+}    
+?>
  
 
 
@@ -113,6 +128,8 @@ require_once("includes.php");
  
   </tbody>
 </table>
+</div>
+
 </div>
 
 </body>
