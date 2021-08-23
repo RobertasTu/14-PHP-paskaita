@@ -36,28 +36,40 @@ $sql = "SELECT * FROM `uzsiregistrave_vartotojai` WHERE `vardas` = '$vardas' AND
 
 $rezultatas = $prisijungimas->query($sql);
 
-if($rezultatas->num_rows == 1) {
+if($rezultatas->num_rows == 1)  {
 
-    $user_info = mysqli_fetch_array($result);
+    $user_info = mysqli_fetch_array($rezultatas);
     $cookie_array = array(
         $user_info["ID"],
         $user_info["slapyvardis"],
         $user_info["vardas"],
         $user_info["teises_id"]
+                
     );
     $cookie_array = implode("|", $cookie_array);
-
     setcookie("prisijungti",  $cookie_array, time() + 3600 * 24, "/");
-     header('Location: klientai.php');
+    $teises_id = intval($user_info['teises_id']);
+
+    if($teises_id == 1) {
+      header('Location: adminlogin.php'); 
+    }
+   
+    if($teises_id == 2) {
+        header('Location: vadyblogin.php');
+    }
+ 
+
+     
 
 } else {
     
     header('login.php');
     $message = "Neteisingi prisijungimo duomenys";
 } 
-
-
 }
+
+
+
 
 
 

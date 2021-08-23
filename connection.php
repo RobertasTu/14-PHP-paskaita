@@ -15,6 +15,7 @@ if($prisijungimas == false) {
     die('Nepavyko prisijungti prie duomenu bazes'. mysqli_connect_error());
 } else {
     // echo 'Prisijungta sekmingai';
+    mysqli_set_charset($prisijungimas, "utf8"); 
 }
 
 ?>
