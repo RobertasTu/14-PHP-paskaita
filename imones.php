@@ -123,7 +123,21 @@ if(!isset($_COOKIE["prisijungti"])) {
     echo '<tr>';
       echo '<td>'. $imones['ID'].'</td>';
       echo '<td>'. $imones['pavadinimas'].'</td>';
-      echo '<td>'. $imones['tipas_ID'].'</td>';
+
+      $imonestipas_ID = $imones_tipas['pavadinimas'];
+      $sql = "SELECT * FROM imones_tipas WHERE reiksme = $imonestipas_ID";
+      $rezultatas_tipasID = $prisijungimas->query($sql);
+
+      if($rezultatas_tipasID->num_rows == 1) {
+        $imonestipas = mysqli_fetch_array($rezultatas_tipasID);
+        echo '<td>';
+          echo $imonestipas['pavadinimas'];
+          echo '<td>';
+
+      } else {
+        echo "<td>Nepatvirtinta imone</td>";
+      }
+      // echo '<td>'. $imones['tipas_ID'].'</td>';
       echo '<td>'. $imones['aprasymas'].'</td>';     
       echo '<td>';
         echo "<a href='imonesredagavimas.php?ID=".$imones["ID"]."'>Redaguoti</a><br>"; 

@@ -1,6 +1,8 @@
 
 <?php 
 require_once('connection.php');
+require_once('includes.php');
+
 ?>
 
 <!DOCTYPE html>
@@ -13,20 +15,33 @@ require_once('connection.php');
 </head>
 <body>
 
+<div class='container'>
+<?php require_once("menu/includes.php"); ?>
 <form action='klientupildymoforma.php' method='get'>
     <input type='text' name='vardas' placeholder='Iveskite Varda'/>
     <input type='text' placeholder='Iveskite Pavarde' name='pavarde'/>
     <select name='teises_id' id='teises_id'>
-        <option value='1'>1</option>
-        <option value='2'>2</option>
-        <option value='3'>3</option>
-        <option value='4'>4</option>
-        <option value='5'>5</option>
+    <?php 
+                         $sql = "SELECT * FROM klientai_teises";
+                         $rezultatas = $prisijungimas->query($sql);
+                     
+                         while($klientaiTeises = mysqli_fetch_array($rezultatas)) {
+
+                            if($klientas["teises_id"] == $klientaiTeises["reiksme"] ) {
+                                echo "<option value='".$klientaiTeises["reiksme"]."' selected='true'>";
+                            }  else {
+                                echo "<option value='".$klientaiTeises["reiksme"]."'>";
+                            }  
+                                
+                                echo $klientaiTeises["pavadinimas"];
+                            echo "</option>";
+                        }
+                        ?>
     </select>
 
 
-    <button type='submit' name='prideti'>Prideti nauja klienta</button>
-
+    <button class='btn btn-primary' type='submit' name='prideti'>Prideti nauja klienta</button>
+    <a href='klientai.php'>Atgal</a>
 
 </form>
 
@@ -36,7 +51,7 @@ if(isset($_GET['prideti'])) {
     if(isset($_GET['vardas']) && !empty($_GET['vardas']) && isset($_GET['pavarde']) && !empty($_GET['pavarde']) && isset($_GET['teises_id']) && !empty($_GET['teises_id'])) {
         $vardas = $_GET['vardas'];
         $pavarde = $_GET['pavarde'];
-        $teises_id = $_GET['teises_id'];
+        $teises_id = intval($_GET['teises_id']);
 
         
         
@@ -56,6 +71,10 @@ if(isset($_GET['prideti'])) {
     }
 }
 ?>
+</div>
+
+
+
 
 
     

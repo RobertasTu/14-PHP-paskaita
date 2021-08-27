@@ -31,16 +31,30 @@ require_once('includes.php');
     <input type='text' name='pavadinimas' placeholder='Iveskite pavadinima'/>
     <input type='text' placeholder='Iveskite aprasyma' name='aprasymas'/>
     <select name='tipas_ID' id='tipas_ID'>
-        <option value='1'>1</option>
+        <?php
+            $sql = "SELECT * FROM imones_tipas ";
+            $rezultatas = $prisijungimas->query($sql);
+            while($imones_tipas = mysqli_fetch_array($rezultatas)) {
+                if($imones_tipas['tipas_ID'] == $imonesTipas['pavadinimas']) {
+                    echo "<option value='".$imones_tipas['pavadinimas']."' selected='true'>";
+
+                } else {
+                    echo "<option value='".$imones_tipas['pavadinimas']."'>";
+                }
+                    echo $imones_tipas['pavadinimas'];
+                    echo "</option>";
+            }
+            ?>
+        <!-- <option value='1'>1</option>
         <option value='2'>2</option>
         <option value='3'>3</option>
         <option value='4'>4</option>
-        <option value='5'>5</option>
+        <option value='5'>5</option> -->
     </select>
 
 
     <button class='btn btn-primary' type='submit' name='prideti'>Prideti nauja įmonę</button>
-
+<a href='imones.php'>Atgal</a>
 
 </form>
 
@@ -73,14 +87,7 @@ if(isset($_POST['prideti'])) {
 }
 ?>
 
-<?php
-echo "<form action='imonespildymoforma.php' method ='post'>";
-echo "<button class='btn btn-primary' type='submit' name='back'>Atgal</button>";
-if(isset($_POST['back'])) {
-    header('Location: imones.php');
-}
 
-?>
     
 </body>
 </html>
