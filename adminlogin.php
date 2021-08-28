@@ -31,6 +31,7 @@ require_once('connection.php');
         .buttons {
             display: flex;
             justify-content: center;
+            span: 150px;
             
             
         }
@@ -43,9 +44,9 @@ require_once('connection.php');
     <h1>Administratoriaus puslapis</h1>
     <form action='adminlogin.php' method='get'>
     <div class='buttons'>
-    <button class='btn btn-primary' type='submit' name='vartotojai'>Vartotojų duomenų bazė</button>
-    <button class='btn btn-primary' type='submit' name='klientai'>Klientų duomenų bazė</button>
-    <button class='btn btn-primary' type='submit' name='imones'>Įmonių duomenų bazės</button>
+    <button class='btn btn-primary' type='submit' name='vartotojai'>Vartotojai</button>
+    <button class='btn btn-primary' type='submit' name='klientai'>Klientai</button>
+    <button class='btn btn-primary' type='submit' name='imones'>Įmonės</button>
     </div>
     </form>
 
@@ -55,6 +56,10 @@ require_once('connection.php');
     
     if(isset($_GET['klientai'])) {
         header('Location: klientai.php');
+    }
+
+    if(isset($_GET['vartotojai'])) {
+        header('Location: vartotojai.php');
     }
     
     ?>

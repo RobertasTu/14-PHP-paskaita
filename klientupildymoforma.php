@@ -17,6 +17,7 @@ require_once('includes.php');
 
 <div class='container'>
 <?php require_once("menu/includes.php"); ?>
+
 <form action='klientupildymoforma.php' method='get'>
     <input type='text' name='vardas' placeholder='Iveskite Varda'/>
     <input type='text' placeholder='Iveskite Pavarde' name='pavarde'/>

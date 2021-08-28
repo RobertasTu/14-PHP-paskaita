@@ -86,7 +86,7 @@ if(!isset($_COOKIE["prisijungti"])) {
                       </div>
                   <?php } ?>
 <div class='container'>
-<?php require_once("menu/includes.php"); ?>
+<?php require_once("menu/includesvart.php"); ?>
 <?php if(isset($_GET["search"]) && !empty($_GET["search"])) { ?>
     <a class="btn btn-primary" href="vartotojai.php"> Išvalyti paiešką</a>
 <?php } ?>
@@ -121,6 +121,7 @@ if(!isset($_COOKIE["prisijungti"])) {
           <th scope="col">Registracijos Data</th>
           <th scope="col">Paskutinis prisijungimas</th>
           <th scope="col">Veiksmai</th>
+          <th scope="col">Prisijungimas</th>
 
 
 
@@ -134,8 +135,8 @@ if(isset($_GET["rikiavimas_id"]) && !empty($_GET["rikiavimas_id"])) {
 } else {
   $rikiavimas = "DESC";
 }
-$sql = "SELECT vartotojai.ID, vartotojai.vardas, vartotojai.pavarde, vartotojai.slapyvardis, vartotojai.registracijos_data vartotojai_teises.pavadinimas FROM vartotojai
-LEFT JOIN vartotojai_teises ON klientai_teises.pavadinimas = vartotojai.teises_id 
+$sql = "SELECT vartotojai.ID, vartotojai.vardas, vartotojai.pavarde, vartotojai.slapyvardis, vartotojai.teises_id, vartotojai.registracijos_data, vartotojai.paskutinis_prisijungimas, vartotojai_teises.pavadinimas FROM vartotojai
+LEFT JOIN vartotojai_teises ON vartotojai.teises_id = vartotojai_teises.ID
 WHERE 1
 ORDER BY vartotojai.ID $rikiavimas";
 
@@ -143,7 +144,7 @@ if(isset($_GET["search"]) && !empty($_GET["search"])) {
   $search = $_GET["search"];
 
   $sql = "SELECT vartotojai.ID, vartotojai.vardas, vartotojai.pavarde, vartotojai_teises.pavadinimas FROM vartotojai
-  LEFT JOIN vartotojai_teises ON vartotojai_teises.pavadinimas = vartotojai.teises_id 
+  LEFT JOIN vartotojai_teises ON vartotojai_teises.ID = vartotojai.teises_id 
 
   WHERE vartotojai.vardas LIKE '%".$search."%' OR vartotojai_teises.pavadinimas LIKE '%".$search."%'
   ORDER BY vartotojai.ID $rikiavimas";
@@ -166,25 +167,26 @@ $rezultatas = $prisijungimas->query($sql);
       echo '<td>'. $vartotojai['ID'].'</td>';
       echo '<td>'. $vartotojai['vardas'].'</td>';
       echo '<td>'. $vartotojai['pavarde'].'</td>';
+      echo '<td>'. $vartotojai['slapyvardis'].'</td>';
       echo '<td>'. $vartotojai['pavadinimas'].'</td>';
-
-//       $teises_id = $klientai["teises_id"];
-//       $sql = "SELECT * FROM klientai_teises WHERE reiksme = $teises_id";
-//       $rezultatas_teises = $prisijungimas->query($sql); //vykdoma uzklausa
-
-//       if($rezultatas_teises->num_rows == 1) {
-//           $teises = mysqli_fetch_array($rezultatas_teises);
-//           echo "<td>";
-//                echo $teises["pavadinimas"];
-//           echo "</td>";
-//       } else {
-//           echo "<td>Nepatvirtintas klientas</td>";
-//       }  
+      echo '<td>'. $vartotojai['registracijos_data'].'</td>';
+      echo '<td>'. $vartotojai['paskutinis_prisijungimas'].'</td>';
+      
+ 
       
       echo '<td>';
-        echo "<a href='klientoredagavimas.php?ID=".$vartotojai["ID"]."'>Redaguoti</a><br>"; 
-        echo "<a href='klientai.php?ID=".$vartotojai["ID"]."'>Istrinti</a>";
+        echo "<a href='vartotojoredagavimas.php?ID=".$vartotojai["ID"]."'>Redaguoti</a><br>"; 
+        echo "<a href='vartotojai.php?ID=".$vartotojai["ID"]."'>Istrinti</a>";
+        
       echo '</td>';
+      echo '<td>';
+      echo "<form action='vartotojai.php' method ='get'>";
+      echo "<button class='btn btn-primary' type='submit' name='isjungti'>Išjungti registraciją</button>";
+      // if(isset($_GET['isjungti'])) {
+    // header('Location: vartotojosukurimas.php');
+  // }
+      echo '</td>';
+
     echo '</tr>';
 }
    
