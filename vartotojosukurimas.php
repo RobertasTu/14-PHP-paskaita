@@ -62,7 +62,7 @@ if(!isset($_COOKIE["prisijungti"])) {
 <?php 
 
 if(isset($_GET['prideti'])) {
-    if(isset($_GET['vardas']) && !empty($_GET['vardas']) && isset($_GET['pavarde']) && !empty($_GET['pavarde']) && isset($_GET['slapyvardis']) && !empty($_GET['slapyvardis'])  && isset($_GET['slaptazodis']) && !empty($_GET['slaptazodis']) && isset($_GET['registracijos_data']) && isset($_GET['teises_id']) && !empty($_GET['teises_id'])) {
+    // if(isset($_GET['vardas']) && !empty($_GET['vardas']) && isset($_GET['pavarde']) && !empty($_GET['pavarde']) && isset($_GET['slapyvardis']) && !empty($_GET['slapyvardis'])  && isset($_GET['slaptazodis']) && !empty($_GET['slaptazodis']) && isset($_GET['registracijos_data']) && isset($_GET['teises_id']) && !empty($_GET['teises_id'])) {
         $vardas = $_GET['vardas'];
         $pavarde = $_GET['pavarde'];
         $slapyvardis = $_GET['slapyvardis'];
@@ -73,7 +73,7 @@ if(isset($_GET['prideti'])) {
 
         
         
-        $sql = "INSERT INTO `vartotojai`(`vardas`, `pavarde`, `slapyvardis`, `teises_id`, `slaptazodis`, `registracijos_data`, `paskutinis_prisijungimas`) VALUES ('$vardas','$pavarde','$slapyvardis', '$teises_id', '$slaptazodis','2021-08-28','2021-08-28')";
+        $sql = "INSERT INTO `vartotojai`(`vardas`, `pavarde`, `slapyvardis`, `teises_id`, `slaptazodis`, `registracijos_data`, `paskutinis_prisijungimas`) VALUES ('$vardas','$pavarde','$slapyvardis', $teises_id, '$slaptazodis','2021-08-28','2021-08-28')";
         if(mysqli_query($prisijungimas, $sql)) {
             $message = "Vartotojas pridėtas sėkmingai";
             $class = 'success';
@@ -86,7 +86,7 @@ if(isset($_GET['prideti'])) {
         $message =  "Uzpildykite visus laukelius";
         $class = "danger";
     }
-}
+// }
 ?>
 
 
