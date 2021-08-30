@@ -61,6 +61,10 @@ require_once('connection.php');
     if(isset($_GET['vartotojai'])) {
         header('Location: vartotojai.php');
     }
+    if(isset($_GET['imones'])) {
+        header('Location: imones.php');
+    }
+
     
     ?>
 

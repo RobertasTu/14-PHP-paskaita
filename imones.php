@@ -32,10 +32,13 @@ require_once("includes.php");
 if(!isset($_COOKIE["prisijungti"])) { 
     header("Location: login.php");    
 } else {
-    echo "Sveikas prisijunges";
+    $cookie_text = $_COOKIE["prisijungti"];
+    $cookie_array = explode("|", $cookie_text );
+    $cookie_vardas = $cookie_array[1];
+    echo "Sveikas prisijunges: ".$cookie_vardas;
     echo "<form action='imones.php' method ='get'>";
-    echo "<button class='btn btn-primary' type='submit' name='vartotojai'>Vartotojų duomenų bazė</button>";
-    echo "<button class='btn btn-primary' type='submit' name='klientai'>Klientų duomenų bazė</button>";
+    // echo "<button class='btn btn-primary' type='submit' name='vartotojai'>Vartotojų duomenų bazė</button>";
+    // echo "<button class='btn btn-primary' type='submit' name='klientai'>Klientų duomenų bazė</button>";
     echo "<button class='btn btn-primary' type='submit' name='logout'>Logout</button>";
     echo "</form>";
     if(isset($_GET['vartotojai'])) {
@@ -63,17 +66,17 @@ if(!isset($_COOKIE["prisijungti"])) {
 
 ?>
 
-<!-- <?php if ( $cookie_teises_id==1) { ?> -->
+<?php if ( $cookie_teises_id==1) { ?>
         <?php 
         if(isset($_GET['ID'])) {
           $id = $_GET['ID'];
           $sql = "DELETE FROM `imones` WHERE `ID` = $id";
 
           if(mysqli_query($prisijungimas, $sql)) {
-            $message = 'Įmonė yra sekmingai istrinta';
+            $message = 'Įmonė yra sėkmingai ištrinta';
               $class='pavyko';    
           } else {
-            $message = 'Kazkas ivyko negerai';
+            $message = 'Kažkas įvyko negerai';
                   $class='danger';  
             }     
         }
@@ -87,7 +90,23 @@ if(!isset($_COOKIE["prisijungti"])) {
                       </div>
                   <?php } ?>
 <div class='container'>
-  <h1>Imones</h1>
+<?php require_once("menu/includesim.php"); ?>
+<?php if(isset($_GET["search"]) && !empty($_GET["search"])) { ?>
+    <a class="btn btn-primary" href="imones.php"> Išvalyti paiešką</a>
+<?php } ?>
+  <h1>Įmonės</h1>
+
+  <form action="imones.php" method="get">
+
+<div class="form-group">
+    <select class="form-control" name="rikiavimas_id">
+        <option value="DESC"> Nuo didžiausio iki mažiausio</option>
+        <option value="ASC"> Nuo mažiausio iki didžiausio</option>
+    </select>
+    <button class="btn btn-primary" name="rikiuoti" type="submit">Rikiuoti</button>
+</div>
+
+</form>
   <?php 
   echo "<form action='imones.php' method ='get'>";
   echo "<button class='btn btn-primary' type='submit' name='pridek_imone'>Pridėti naują įmonę</button>";
@@ -96,49 +115,53 @@ if(!isset($_COOKIE["prisijungti"])) {
         header('Location: imonespildymoforma.php');
     } 
   ?>
-    <table class="table">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Pavadinimas</th>
-          <th scope="col">Tipas_ID</th>
-          <th scope="col">Aprasymas</th>
+          <th scope="col">Aprašymas</th>
+          <!-- <th scope="col">Tipas</th> -->
           <th scope="col">Veiksmai</th>
         </tr>
       </thead>
       <tbody>
   <?php
 
-  $sql = "SELECT * FROM `imones` WHERE 1 ORDER BY `imones`.`ID` DESC"; 
-  $rezultatas = $prisijungimas->query($sql); 
-                 
-  //ID pavadinimas aprasymas
-  //1  admin       administratorius
-  // 2  vadyb       vadybininkas
-  // 3  inspekt     inspektorius
-  // 4  s_admin     sistemos administratorius
+if(isset($_GET["rikiavimas_id"]) && !empty($_GET["rikiavimas_id"])) {
+  $rikiavimas = $_GET["rikiavimas_id"];
+} else {
+  $rikiavimas = "DESC";
+}
+$sql = "SELECT imones.ID, imones.pavadinimas, imones.aprasymas, imones_tipas.aprasymas
+FROM imones
+LEFT JOIN imones_tipas
+ON imones.tipas_ID = imones_tipas.ID  
+WHERE 1
+ORDER BY imones.ID $rikiavimas";
 
-  
+if(isset($_GET["search"]) && !empty($_GET["search"])) {
+  $search = $_GET["search"];
+
+  $sql = "SELECT imones.ID, imones.pavadinimas, imones.tipas_ID, imones.aprasas, imones_tipas.aprasymas 
+  FROM imones
+  LEFT JOIN imones_tipas ON imones.tipas_ID = imones_tipas.ID
+
+  WHERE imones.pavadinimas LIKE '%".$search."%' OR imones.aprasas LIKE '%".$search."%' OR imones_tipas.aprasymas LIKE '%".$search."%'
+  ORDER BY imones.ID $rikiavimas";
+}
+
+$rezultatas = $prisijungimas->query($sql);
+
+
   while($imones = mysqli_fetch_array($rezultatas)) {
     echo '<tr>';
       echo '<td>'. $imones['ID'].'</td>';
       echo '<td>'. $imones['pavadinimas'].'</td>';
+      echo '<td>'. $imones['aprasymas'].'</td>';
+      // echo '<td>'. $imones['aprasymas'].'</td>'; 
 
-      $imonestipas_ID = $imones_tipas['pavadinimas'];
-      $sql = "SELECT * FROM imones_tipas WHERE reiksme = $imonestipas_ID";
-      $rezultatas_tipasID = $prisijungimas->query($sql);
-
-      if($rezultatas_tipasID->num_rows == 1) {
-        $imonestipas = mysqli_fetch_array($rezultatas_tipasID);
-        echo '<td>';
-          echo $imonestipas['pavadinimas'];
-          echo '<td>';
-
-      } else {
-        echo "<td>Nepatvirtinta imone</td>";
-      }
-      // echo '<td>'. $imones['tipas_ID'].'</td>';
-      echo '<td>'. $imones['aprasymas'].'</td>';     
+          
       echo '<td>';
         echo "<a href='imonesredagavimas.php?ID=".$imones["ID"]."'>Redaguoti</a><br>"; 
         echo "<a href='imones.php?ID=".$imones["ID"]."'>Istrinti</a>";

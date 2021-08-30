@@ -16,8 +16,17 @@
           Vartotojai
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Naujas vartotojas</a>
+          <a class="dropdown-item" href="vartotojosukurimas.php">Naujas vartotojas</a>
           <a class="dropdown-item" href="vartotojai.php">Vartotojų sarašas</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Įmonės
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="imonespildymoforma.php">Nauja įmonė</a>
+          <a class="dropdown-item" href="imones.php">Įmonių sarašas</a>
         </div>
       </li>
     </ul>

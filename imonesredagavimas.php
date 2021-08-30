@@ -134,7 +134,7 @@ if(isset($_GET["submit"])) {
                     </select>
     </div>
 
-<a href='klientai.php'>Atgal</a><br>
+<a href='imones.php'>Atgal</a><br>
 <button class='btn btn-primary' type='submit' name='submit'>Issaugoti naujus duomenis</button>
    
 </form>
@@ -146,7 +146,7 @@ if(isset($_GET["submit"])) {
 
 <?php } else { ?>
     <h2>Tokio kliento nera</h2>
-    <a href='klientai.php'>Atgal</a>
+    <a href='imones.php'>Atgal</a>
 
     <?php } ?>
 
@@ -156,6 +156,4 @@ if(isset($_GET["submit"])) {
     
 </body>
 </html>
-
-
 

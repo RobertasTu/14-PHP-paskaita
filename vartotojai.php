@@ -33,8 +33,8 @@ if(!isset($_COOKIE["prisijungti"])) {
     $cookie_vardas = $cookie_array[1];
     echo "Sveikas prisijunges: ".$cookie_vardas;
     echo "<form action='vartotojai.php' method ='get'>";
-    echo "<button class='btn btn-primary' type='submit' name='klientai'>Klientų duomenų bazė</button>";
-    echo "<button class='btn btn-primary' type='submit' name='imones'>Imonių duomenų bazė</button>";
+    // echo "<button class='btn btn-primary' type='submit' name='klientai'>Klientų duomenų bazė</button>";
+    // echo "<button class='btn btn-primary' type='submit' name='imones'>Imonių duomenų bazė</button>";
     echo "<button class='btn btn-primary' type='submit' name='logout'>Logout</button>";
     echo "</form>";
     if(isset($_GET['klientai'])) {
@@ -69,10 +69,10 @@ if(!isset($_COOKIE["prisijungti"])) {
           $sql = "DELETE FROM `vartotojai` WHERE `ID` = $id";
 
           if(mysqli_query($prisijungimas, $sql)) {
-            $message = 'Vartotojas yra sekmingai istrintas';
+            $message = 'Vartotojas yra sekmingai ištrintas';
               $class='pavyko';    
           } else {
-            $message = 'Kazkas ivyko negerai';
+            $message = 'Kažkas įvyko negerai';
                   $class='danger';  
             }     
         }
@@ -176,7 +176,7 @@ $rezultatas = $prisijungimas->query($sql);
       
       echo '<td>';
         echo "<a href='vartotojoredagavimas.php?ID=".$vartotojai["ID"]."'>Redaguoti</a><br>"; 
-        echo "<a href='vartotojai.php?ID=".$vartotojai["ID"]."'>Istrinti</a>";
+        echo "<a href='vartotojai.php?ID=".$vartotojai["ID"]."'>Ištrinti</a>";
         
       echo '</td>';
       echo '<td>';

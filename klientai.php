@@ -2,7 +2,7 @@
 4. Paspaudus ant kliento, turi būti įmanoma redaguoti jo duomenis ir išsaugoti.
 5. Kiekvieną klientą turi būti galimybė ištrinti iš duomenų bazės. -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="lt">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -36,8 +36,8 @@ if(!isset($_COOKIE["prisijungti"])) {
     $cookie_vardas = $cookie_array[1];
     echo "Sveikas prisijunges: ".$cookie_vardas;
     echo "<form action='klientai.php' method ='get'>";
-    echo "<button class='btn btn-primary' type='submit' name='vartotojai'>Vartotojų duomenų bazė</button>";
-    echo "<button class='btn btn-primary' type='submit' name='imones'>Imonių duomenų bazė</button>";
+    // echo "<button class='btn btn-primary' type='submit' name='vartotojai'>Vartotojų duomenų bazė</button>";
+    // echo "<button class='btn btn-primary' type='submit' name='imones'>Imonių duomenų bazė</button>";
     echo "<button class='btn btn-primary' type='submit' name='logout'>Logout</button>";
     echo "</form>";
     if(isset($_GET['vartotojai'])) {
@@ -72,10 +72,10 @@ if(!isset($_COOKIE["prisijungti"])) {
           $sql = "DELETE FROM `klientai` WHERE `ID` = $id";
 
           if(mysqli_query($prisijungimas, $sql)) {
-            $message = 'Klientas yra sekmingai istrintas';
+            $message = 'Klientas yra sėkmingai ištrintas';
               $class='pavyko';    
           } else {
-            $message = 'Kazkas ivyko negerai';
+            $message = 'Kažkas įvyko negerai';
                   $class='danger';  
             }     
         }
@@ -131,7 +131,8 @@ if(isset($_GET["rikiavimas_id"]) && !empty($_GET["rikiavimas_id"])) {
 } else {
   $rikiavimas = "DESC";
 }
-$sql = "SELECT klientai.ID, klientai.vardas, klientai.pavarde, klientai_teises.pavadinimas FROM klientai
+$sql = "SELECT klientai.ID, klientai.vardas, klientai.pavarde, klientai_teises.pavadinimas
+FROM klientai
 LEFT JOIN klientai_teises ON klientai_teises.reiksme = klientai.teises_id 
 WHERE 1
 ORDER BY klientai.ID $rikiavimas";
@@ -180,7 +181,7 @@ $rezultatas = $prisijungimas->query($sql);
       
       echo '<td>';
         echo "<a href='klientoredagavimas.php?ID=".$klientai["ID"]."'>Redaguoti</a><br>"; 
-        echo "<a href='klientai.php?ID=".$klientai["ID"]."'>Istrinti</a>";
+        echo "<a href='klientai.php?ID=".$klientai["ID"]."'>Ištrinti</a>";
       echo '</td>';
     echo '</tr>';
 }
