@@ -94,7 +94,7 @@ if(isset($_GET['prideti'])) {
 ?>
 
 <div class='container'>
-<?php require_once("menu/includes.php"); ?>
+<!-- <?php require_once("menu/includes.php"); ?> -->
 <h1>Naujas klientas</h1>
 
 <form action='klientupildymoforma.php' method='get'>

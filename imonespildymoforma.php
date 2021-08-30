@@ -104,11 +104,11 @@ if(isset($_POST['prideti'])) {
             $sql = "SELECT * FROM imones_tipas ";
             $rezultatas = $prisijungimas->query($sql);
             while($imones_tipas = mysqli_fetch_array($rezultatas)) {
-                if($imones_tipas['tipas_ID'] == $imonesTipas['aprasymas']) {
-                    echo "<option value='".$imones_tipas['aprasymas']."' selected='true'>";
+                if($tipas_ID == $imones_tipas['ID']) {
+                    echo "<option value='".$imones_tipas['ID']."' selected='true'>";
 
                 } else {
-                    echo "<option value='".$imones_tipas['aprasymas']."'>";
+                    echo "<option value='".$imones_tipas['ID']."'>";
                 }
                     echo $imones_tipas['aprasymas'];
                     echo "</option>";

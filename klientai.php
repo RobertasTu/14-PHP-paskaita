@@ -106,13 +106,8 @@ if(!isset($_COOKIE["prisijungti"])) {
 </div>
 
 </form>
-<?php
-  echo "<form action='klientai.php' method ='get'>";
-  echo "<button class='btn btn-primary' type='submit' name='prideti'>Prideti nauja klienta</button>";
-  if(isset($_GET['prideti'])) {
-    header('Location: klientupildymoforma.php');
-  }
-  ?>    
+
+<a href="klientupildymoforma.php" class="btn btn-primary">Prideti nauja klienta</a>
     <table class="table table-striped">
       <thead>
         <tr>
