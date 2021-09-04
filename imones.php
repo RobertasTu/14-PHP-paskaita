@@ -107,14 +107,9 @@ if(!isset($_COOKIE["prisijungti"])) {
 </div>
 
 </form>
-  <?php 
-  echo "<form action='imones.php' method ='get'>";
-  echo "<button class='btn btn-primary' type='submit' name='pridek_imone'>Pridėti naują įmonę</button>";
-  echo "</form>";
-    if(isset($_GET['pridek_imone'])) {
-        header('Location: imonespildymoforma.php');
-    } 
-  ?>
+
+<a href='imonespildymoforma.php' class='btn btn-primary'>Pridėti naują įmonę</a>
+ 
     <table class="table table-striped">
       <thead>
         <tr>
@@ -147,7 +142,7 @@ if(isset($_GET["search"]) && !empty($_GET["search"])) {
   FROM imones
   LEFT JOIN imones_tipas ON imones.tipas_ID = imones_tipas.ID
 
-  WHERE imones.pavadinimas LIKE '%".$search."%' OR imones.aprasas LIKE '%".$search."%' OR imones_tipas.aprasymas LIKE '%".$search."%'
+  WHERE imones.pavadinimas LIKE '%".$search."%' 
   ORDER BY imones.ID $rikiavimas";
 }
 

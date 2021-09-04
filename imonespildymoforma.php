@@ -27,6 +27,8 @@ require_once('connection.php');
        
     </style>
 <body>
+
+<div class='container'>
 <?php 
 
 if(!isset($_COOKIE["prisijungti"])) { 
@@ -85,8 +87,8 @@ if(isset($_POST['prideti'])) {
     }
 }
 ?>
-<div class='container'>
-<?php require_once("menu/includes.php"); ?>
+
+<?php require_once("menu/includesim.php"); ?>
 <h1>Nauja įmonė</h1>
 <form action='imonespildymoforma.php' method='post'>
 <div class="form-group">

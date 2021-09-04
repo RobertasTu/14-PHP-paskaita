@@ -79,6 +79,27 @@ if(!isset($_COOKIE["prisijungti"])) {
 
         ?>
 
+        <!-- <?php 
+          if(isset($_GET['registracija.ID'])) {
+          $id = $_GET['ID'];
+          $registracija = 1;
+          $sql = "UPDATE vartotojai
+          SET registracija = $registracija
+          WHERE ID = $id";
+
+    if(mysqli_query($prisijungimas, $sql)) {
+      $message = 'Registracija yra išjungta';
+        $class='pavyko';
+
+          } else {
+            $message = 'Kažkas įvyko negerai';
+                  $class='danger';  
+            }  
+            
+          }
+        
+        ?> -->
+
                   <?php if(isset($message)) { ?>
 
                       <div class='alert alert-<?php echo $class; ?>' role='alert'>
@@ -120,8 +141,9 @@ if(!isset($_COOKIE["prisijungti"])) {
           <th scope="col">Teises_ID</th>
           <th scope="col">Registracijos Data</th>
           <th scope="col">Paskutinis prisijungimas</th>
+          <th scope="col">Registracija</th>
           <th scope="col">Veiksmai</th>
-          <th scope="col">Prisijungimas</th>
+          
 
 
 
@@ -135,7 +157,7 @@ if(isset($_GET["rikiavimas_id"]) && !empty($_GET["rikiavimas_id"])) {
 } else {
   $rikiavimas = "DESC";
 }
-$sql = "SELECT vartotojai.ID, vartotojai.vardas, vartotojai.pavarde, vartotojai.slapyvardis, vartotojai.teises_id, vartotojai.registracijos_data, vartotojai.paskutinis_prisijungimas, vartotojai_teises.pavadinimas FROM vartotojai
+$sql = "SELECT vartotojai.ID, vartotojai.vardas, vartotojai.Registracija, vartotojai.pavarde, vartotojai.slapyvardis, vartotojai.teises_id, vartotojai.registracijos_data, vartotojai.paskutinis_prisijungimas, vartotojai_teises.pavadinimas FROM vartotojai
 LEFT JOIN vartotojai_teises ON vartotojai.teises_id = vartotojai_teises.ID
 WHERE 1
 ORDER BY vartotojai.ID $rikiavimas";
@@ -150,6 +172,9 @@ if(isset($_GET["search"]) && !empty($_GET["search"])) {
   ORDER BY vartotojai.ID $rikiavimas";
 }
 
+
+
+
 $rezultatas = $prisijungimas->query($sql);
 
   // $sql = "SELECT * FROM `klientai` WHERE 1 ORDER BY `klientai`.`ID` DESC"; 
@@ -163,6 +188,15 @@ $rezultatas = $prisijungimas->query($sql);
 
   
   while($vartotojai = mysqli_fetch_array($rezultatas)) {
+    switch ($vartotojai['Registracija']) { // 0 ir 1
+      case '0':
+        $kintamasis = "Įjungta";
+        break;
+        case '1';
+        $kintamasis = 'Išjungta';
+        break;
+        
+    }
     echo '<tr>';
       echo '<td>'. $vartotojai['ID'].'</td>';
       echo '<td>'. $vartotojai['vardas'].'</td>';
@@ -171,6 +205,8 @@ $rezultatas = $prisijungimas->query($sql);
       echo '<td>'. $vartotojai['pavadinimas'].'</td>';
       echo '<td>'. $vartotojai['registracijos_data'].'</td>';
       echo '<td>'. $vartotojai['paskutinis_prisijungimas'].'</td>';
+      echo '<td>'. $kintamasis.'</td>';
+                  
       
  
       
@@ -179,13 +215,7 @@ $rezultatas = $prisijungimas->query($sql);
         echo "<a href='vartotojai.php?ID=".$vartotojai["ID"]."'>Ištrinti</a>";
         
       echo '</td>';
-      echo '<td>';
-      echo "<form action='vartotojai.php' method ='get'>";
-      echo "<button class='btn btn-primary' type='submit' name='isjungti'>Išjungti registraciją</button>";
-      // if(isset($_GET['isjungti'])) {
-    // header('Location: vartotojosukurimas.php');
-  // }
-      echo '</td>';
+     
 
     echo '</tr>';
 }

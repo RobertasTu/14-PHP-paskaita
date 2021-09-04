@@ -31,6 +31,7 @@ require_once('connection.php');
         </style>
 </head>
 <body>
+<div class='container'>
 <?php 
 
 if(!isset($_COOKIE["prisijungti"])) { 
@@ -78,6 +79,14 @@ if(isset($_GET['prideti'])) {
         if(mysqli_query($prisijungimas, $sql)) {
             $message = "Vartotojas pridėtas sėkmingai";
             $class = 'success';
+            echo $vardas;
+            echo $pavarde;
+            echo $slapyvardis;
+            echo $slaptazodis;
+            echo $registracijos_data;
+            echo '<br>';
+            echo $teises_id.': teises_id';
+
                        
             } else {
                 $message =  "Kazkas ivyko negerai";
@@ -91,7 +100,7 @@ if(isset($_GET['prideti'])) {
 ?>
 
 
-<div class='container'>
+
 <?php require_once("menu/includesvart.php"); ?>
 
 <h1>Naujas Vartotojas</h1>
@@ -110,7 +119,7 @@ if(isset($_GET['prideti'])) {
     <input class='form-control' type='text' placeholder='Iveskite slapyvardi' name='slapyvardis'/>
 </div>
 <div class="form-group">
-    <label for="slaptazodis">Slaptazodis:</label>
+    <label for="slaptazodis">Slaptažodis:</label>
     <input class='form-control' type='text' placeholder='Iveskite slaptazodi' name='slaptazodis'/>
 </div>
 <div class="form-group">
@@ -126,15 +135,15 @@ if(isset($_GET['prideti'])) {
                          $sql = "SELECT * FROM vartotojai_teises";
                          $rezultatas = $prisijungimas->query($sql);
                      
-                         while($vartotojaiTeises = mysqli_fetch_array($rezultatas)) {
+                         while($vartotojai_teises = mysqli_fetch_array($rezultatas)) {
 
-                            if($vartotojai["teises_id"] == $vartotojaiTeises["reiksme"] ) {
-                                echo "<option value='".$vartotojaiTeises["reiksme"]."' selected='true'>";
+                            if($teises_id == $vartotojai_teises["ID"] ) {
+                                echo "<option value='".$vartotojai_teises["ID"]."' selected='true'>";
                             }  else {
-                                echo "<option value='".$vartotojaiTeises["reiksme"]."'>";
+                                echo "<option value='".$vartotojai_teises["ID"]."'>";
                             }  
                                 
-                                echo $vartotojaiTeises["pavadinimas"];
+                                echo $vartotojai_teises["aprasymas"];
                             echo "</option>";
                         }
                         ?>

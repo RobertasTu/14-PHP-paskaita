@@ -12,12 +12,21 @@
         <a class="nav-link" href="vartotojupildymoforma.php">Naujas vartotojas</a>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="klientai.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Klientai
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="klientupildymoforma.php">Naujas klientas</a>
           <a class="dropdown-item" href="klientai.php">Klientų sarašas</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="imones.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Įmonės
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="imonespildymoforma.php">Nauja įmonė</a>
+          <a class="dropdown-item" href="imones.php">Įmonių sarašas</a>
         </div>
       </li>
     </ul>

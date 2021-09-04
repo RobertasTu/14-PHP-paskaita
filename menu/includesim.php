@@ -12,7 +12,16 @@
         <a class="nav-link" href="imonespildymoforma.php">Nauja įmonė</a>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="vartotojai.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Vartotojai
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="vartotojosukurimas.php">Naujas vartotojas</a>
+          <a class="dropdown-item" href="vartotojai.php">Vartotojų sarašas</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="klientai.php" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Klientai
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -21,8 +30,8 @@
         </div>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0" action="vartotojai.php" method="get">
-      <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search User" aria-label="Search User">
+    <form class="form-inline my-2 my-lg-0" action="imones.php" method="get">
+      <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search company" aria-label="Search company">
       <button class="btn btn-primary my-2 my-sm-0" type="submit" name="search_button">Search</button>
     </form>
   </div>

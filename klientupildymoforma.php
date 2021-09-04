@@ -32,6 +32,7 @@ require_once('connection.php');
     </style>
 </head>
 <body>
+<div class='container'>
 <?php 
 
 if(!isset($_COOKIE["prisijungti"])) { 
@@ -93,8 +94,8 @@ if(isset($_GET['prideti'])) {
 }
 ?>
 
-<div class='container'>
-<!-- <?php require_once("menu/includes.php"); ?> -->
+
+<?php require_once("menu/includes.php"); ?>
 <h1>Naujas klientas</h1>
 
 <form action='klientupildymoforma.php' method='get'>

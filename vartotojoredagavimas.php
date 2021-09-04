@@ -31,6 +31,35 @@ require_once('connection.php');
 
 </head>
 <body>
+<div class='container'>
+<?php 
+
+if(!isset($_COOKIE["prisijungti"])) { 
+    header("Location: login.php");    
+} else {
+    $cookie_text = $_COOKIE["prisijungti"];
+    $cookie_array = explode("|", $cookie_text );
+    $cookie_vardas = $cookie_array[1];
+    echo "Sveikas prisijunges: ".$cookie_vardas;
+    echo "<form action='klientai.php' method ='get'>";
+    // echo "<button class='btn btn-primary' type='submit' name='vartotojai'>Vartotojų duomenų bazė</button>";
+    // echo "<button class='btn btn-primary' type='submit' name='imones'>Imonių duomenų bazė</button>";
+    echo "<button class='btn btn-primary' type='submit' name='logout'>Logout</button>";
+    echo "</form>";
+    // if(isset($_GET['vartotojai'])) {
+    //   header('Location: vartotojai.php');
+    // }
+    // if(isset($_GET['imones'])) {
+    //   header('Location: imones.php');
+    // }
+
+    if(isset($_GET["logout"])) {
+        setcookie("prisijungti", "", time() - 3600, "/");
+        header("Location: login.php");
+    }
+}    
+?>
+
 
 <?php 
 
@@ -59,16 +88,18 @@ if(isset($_GET["submit"])) {
         $pavarde = $_GET["pavarde"];
         $teises_id = intval($_GET["teises_id"]);
         $slapyvardis = $_GET["slapyvardis"];
-        $slaptazodis= $_GET["slaptazodis"];
+        $slaptazodis = $_GET["slaptazodis"];
+        $registracija = $_GET['registracija'];
 
 
         $sql = "UPDATE `vartotojai`
-        SET `vardas`='$vardas', `pavarde`='$pavarde', `slapyvardis`='$slapyvardis', `teises_id`=$teises_id, `slaptazodis`='$slaptazodis'
+        SET `vardas`='$vardas', `pavarde`='$pavarde', `slapyvardis`='$slapyvardis', `teises_id`=$teises_id, `slaptazodis`='$slaptazodis', `Registracija`='$registracija'
         WHERE ID = $id";
 
         if(mysqli_query($prisijungimas, $sql)) {
             $message =  "Vartotojas redaguotas sėkmingai";
             $class = "success";
+            // echo 'teises_id: '.$teises_id;
         } else {
             $message =  "Kazkas ivyko negerai";
             $class = "danger";
@@ -98,8 +129,8 @@ if(isset($_GET["submit"])) {
 
 ?>
 
+<?php require_once("menu/includesvart.php"); ?>
 
-<div class='container'>
     <h1>Vartotojo redagavimas</h1>
 
     <?php if($hideForm == false) { ?>
@@ -129,15 +160,15 @@ if(isset($_GET["submit"])) {
                          $sql = "SELECT * FROM vartotojai_teises";
                          $rezultatas = $prisijungimas->query($sql);
                      
-                         while($vartotojaiTeises = mysqli_fetch_array($rezultatas)) {
+                         while($vartotojai_teises = mysqli_fetch_array($rezultatas)) {
 
-                            if($vartotojai["teises_id"] == $vartotojaiTeises["reiksme"] ) {
-                                echo "<option value='".$vartotojaiTeises["reiksme"]."' selected='true'>";
+                            if($teises_id == $vartotojai_teises["ID"] ) {
+                                echo "<option value='".$vartotojai_teises["ID"]."' selected='true'>";
                             }  else {
-                                echo "<option value='".$vartotojaiTeises["reiksme"]."'>";
+                                echo "<option value='".$vartotojai_teises["ID"]."'>";
                             }  
                                 
-                                echo $vartotojaiTeises["pavadinimas"];
+                                echo $vartotojai_teises["aprasymas"];
                             echo "</option>";
                         }
                         ?>
@@ -147,6 +178,13 @@ if(isset($_GET["submit"])) {
         <label for='slaptazodis'>Slaptazodis</label>
         <input class='form-control' type='text' name='slaptazodis'  value="<?php echo $vartotojai['slaptazodis']; ?>" />
 </div>
+<div class='form-group'>
+        <label for='registracija'>Registracija</label>
+        <select class="form-control" name="registracija">
+        <option value="0">Vartojojo registracija įjungta</option>
+        <option value="1">Vartotojo registracija išjungta</option> 
+            
+            </select>
 
 <a href='vartotojai.php'>Atgal</a><br>
 <button class='btn btn-primary' type='submit' name='submit'>Issaugoti naujus duomenis</button>

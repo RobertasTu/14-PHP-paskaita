@@ -17,12 +17,12 @@ require_once('connection.php');
             text-align: center;
         }
 
-        .container {
+        /* .container {
             position:absolute;
             top:50%;
             left:50%;
             transform: translateY(-50%) translateX(-50%);
-        }
+        } */
 
         .hide {
             display:none;
@@ -31,7 +31,34 @@ require_once('connection.php');
 
 </head>
 <body>
+<div class='container'>
+<?php 
 
+if(!isset($_COOKIE["prisijungti"])) { 
+    header("Location: login.php");    
+} else {
+    $cookie_text = $_COOKIE["prisijungti"];
+    $cookie_array = explode("|", $cookie_text );
+    $cookie_vardas = $cookie_array[1];
+    echo "Sveikas prisijunges: ".$cookie_vardas;
+    echo "<form action='klientai.php' method ='get'>";
+    // echo "<button class='btn btn-primary' type='submit' name='vartotojai'>Vartotojų duomenų bazė</button>";
+    // echo "<button class='btn btn-primary' type='submit' name='imones'>Imonių duomenų bazė</button>";
+    echo "<button class='btn btn-primary' type='submit' name='logout'>Logout</button>";
+    echo "</form>";
+    // if(isset($_GET['vartotojai'])) {
+    //   header('Location: vartotojai.php');
+    // }
+    // if(isset($_GET['imones'])) {
+    //   header('Location: imones.php');
+    // }
+
+    if(isset($_GET["logout"])) {
+        setcookie("prisijungti", "", time() - 3600, "/");
+        header("Location: login.php");
+    }
+}    
+?>
 <?php 
 
 if(isset($_GET['ID'])) {
@@ -66,9 +93,9 @@ if(isset($_GET["submit"])) {
         if(mysqli_query($prisijungimas, $sql)) {
             $message =  "Įmonė redaguota sėkmingai";
             $class = "success";
-            echo $pavadinimas;
-            echo $aprasymas;
-            echo $tipas_id;
+            // echo $pavadinimas;
+            // echo $aprasymas;
+            // echo $tipas_id;
         } else {
             $message =  "Kažkas ivyko negerai";
             $class = "danger";
@@ -95,8 +122,8 @@ if(isset($_GET["submit"])) {
 
 ?>
 
+<?php require_once("menu/includesim.php"); ?>
 
-<div class='container'>
     <h1>Įmonės redagavimas</h1>
 
     <?php if($hideForm == false) { ?>
