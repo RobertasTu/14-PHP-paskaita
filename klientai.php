@@ -130,16 +130,20 @@ if(!isset($_COOKIE["prisijungti"])) {
       
   <?php 
 
-if(isset($_GET["rikiavimas_id"]) && !empty($_GET["rikiavimas_id"])) {
-  $rikiavimas = $_GET["rikiavimas_id"];
+if(isset($_GET["rikiavimas_id"]) && !empty($_GET["rikiavimas_id"]) && isset($_GET["page-limit"])) {
+  // $rikiavimas = $_GET["rikiavimas_id"];
+  $page_limit = $_GET["page-limit"] * 30 - 30;
 } else {
   $rikiavimas = "DESC";
+  $page_limit = 0;
 }
+
 $sql = "SELECT klientai.ID, klientai.vardas, klientai.pavarde, klientai_teises.pavadinimas
 FROM klientai
 LEFT JOIN klientai_teises ON klientai_teises.reiksme = klientai.teises_id 
 WHERE 1
-ORDER BY klientai.ID $rikiavimas";
+ORDER BY klientai.ID $rikiavimas
+LIMIT $page_limit , 30";
 
 if(isset($_GET["search"]) && !empty($_GET["search"])) {
   $search = $_GET["search"];
@@ -150,6 +154,21 @@ if(isset($_GET["search"]) && !empty($_GET["search"])) {
   WHERE klientai.vardas LIKE '%".$search."%' OR klientai_teises.pavadinimas LIKE '%".$search."%'
   ORDER BY klientai.ID $rikiavimas";
 }
+
+
+
+// if(isset($_GET["page-limit"])) {
+//     $page_limit = $_GET["page-limit"] * 30 - 30;    
+// } else {
+//     $page_limit = 0;    
+// }
+
+// $sql = "SELECT * FROM 
+// klientai
+// ORDER BY klientai.ID ASC
+// LIMIT $page_limit , 30
+// ";
+
 
 $rezultatas = $prisijungimas->query($sql);
 
@@ -203,6 +222,40 @@ if($cookie_teises_id!=3) {
  
   </tbody>
 </table>
+
+<?php
+
+$sql = "SELECT CEILING(COUNT(ID)/30), COUNT(ID) FROM klientai";
+$rezultatas = $prisijungimas->query($sql);  
+//Kiek irasu grazina sita uzklausa?
+//1 irasas
+if($rezultatas->num_rows == 1) { 
+    $clients_total_pages = mysqli_fetch_array($rezultatas);
+    // var_dump($clients_total_pages);
+    
+    for($i = 1; $i <= intval($clients_total_pages[0]); $i++) {
+        //Ar tikrai mes $i turim perduot?
+        echo "<a href='klientai.php?page-limit=$i'>";
+            echo $i; //puslapio numeris
+            echo " ";
+        echo "</a>";
+    }
+    
+    echo "<p>";
+    echo "Is viso puslapiu: ";
+    echo $clients_total_pages[0];
+    echo "</p>";
+
+    echo "<p>";
+    echo "Is viso klientu: ";
+     echo $clients_total_pages[1];
+    echo "</p>";
+}
+else {
+    echo "Nepavyko suskaiciuoti klientu";
+}
+?>
+
 </div>
 
 

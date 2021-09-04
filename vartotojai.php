@@ -150,6 +150,14 @@ if(!isset($_COOKIE["prisijungti"])) {
         </tr>
       </thead>
       <tbody>
+ 
+
+
+
+
+
+
+
   <?php
 
 if(isset($_GET["rikiavimas_id"]) && !empty($_GET["rikiavimas_id"])) {
@@ -230,6 +238,9 @@ $rezultatas = $prisijungimas->query($sql);
  
   </tbody>
 </table>
+
+
+
 </div>
 
 </div>
