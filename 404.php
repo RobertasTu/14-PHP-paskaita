@@ -51,7 +51,7 @@ require_once('connection.php');
     $cookie_vardas = $cookie_array[1];
     $cookie_id = $cookie_array[0];
     $date = date("Y-m-d");
-    echo "Sveikas prisijunges: ".$cookie_vardas.'<br>';
+    echo "Sveikas prisijungęs: ".$cookie_vardas.'<br>';
     echo "Jūsų registracija yra laikinai sustabdyta kreipkitės į sistemos administratorių";
     echo "<form action='adminlogin.php' method ='get'>";
     echo "<button class='btn btn-primary' type='submit' name='logout'>Logout</button>";
@@ -69,7 +69,7 @@ $rezultatas = $prisijungimas->query($sql);
 
 
 if(isset($_GET["logout"])) {
-    setcookie("prisijungti", "", time() - 3600, "/");
+    // setcookie("prisijungti", "", time() - 3600, "/");
     header("Location: login.php");
 }
 } 
