@@ -62,7 +62,7 @@ if(!isset($_COOKIE["prisijungti"])) {
 
 ?>
 
-<?php if ( $cookie_teises_id==1) { ?>
+<?php if ( $cookie_teises_id==1 || $cookie_teises_id==3 || $cookie_teises_id==4) { ?>
         <?php 
         if(isset($_GET['ID'])) {
           $id = $_GET['ID'];
@@ -124,13 +124,11 @@ if(!isset($_COOKIE["prisijungti"])) {
 </div>
 
 </form>
-<?php
-  echo "<form action='vartotojai.php' method ='get'>";
-  echo "<button class='btn btn-primary' type='submit' name='prideti'>Prideti nauja vartotoją</button>";
-  if(isset($_GET['prideti'])) {
-    header('Location: vartotojosukurimas.php');
-  }
-  ?>    
+
+  
+  <a href='vartotojosukurimas.php' class='btn btn-primary' name='prideti'>Prideti nauja vartotoją</a>
+  
+     
     <table class="table table-striped">
       <thead>
         <tr>
@@ -141,8 +139,10 @@ if(!isset($_COOKIE["prisijungti"])) {
           <th scope="col">Teises_ID</th>
           <th scope="col">Registracijos Data</th>
           <th scope="col">Paskutinis prisijungimas</th>
+          <?php if($cookie_teises_id!=3) { ?>
           <th scope="col">Registracija</th>
           <th scope="col">Veiksmai</th>
+          <?php } ?>
           
 
 
@@ -205,17 +205,20 @@ $rezultatas = $prisijungimas->query($sql);
       echo '<td>'. $vartotojai['pavadinimas'].'</td>';
       echo '<td>'. $vartotojai['registracijos_data'].'</td>';
       echo '<td>'. $vartotojai['paskutinis_prisijungimas'].'</td>';
+      if($cookie_teises_id!=3) {
       echo '<td>'. $kintamasis.'</td>';
                   
       
- 
+     
       
       echo '<td>';
+      if($cookie_teises_id!=4) {
         echo "<a href='vartotojoredagavimas.php?ID=".$vartotojai["ID"]."'>Redaguoti</a><br>"; 
+      }
         echo "<a href='vartotojai.php?ID=".$vartotojai["ID"]."'>Ištrinti</a>";
         
       echo '</td>';
-     
+      }    
 
     echo '</tr>';
 }

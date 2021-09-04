@@ -66,7 +66,7 @@ if(!isset($_COOKIE["prisijungti"])) {
 
 ?>
 
-<?php if ( $cookie_teises_id==1) { ?>
+<?php if ( $cookie_teises_id==1 || $cookie_teises_id==2 || $cookie_teises_id==3 || $cookie_teises_id==4)  { ?>
         <?php 
         if(isset($_GET['ID'])) {
           $id = $_GET['ID'];
@@ -117,7 +117,9 @@ if(!isset($_COOKIE["prisijungti"])) {
           <th scope="col">Pavadinimas</th>
           <th scope="col">Aprašymas</th>
           <!-- <th scope="col">Tipas</th> -->
+          <?php  if($cookie_teises_id!=3) { ?>
           <th scope="col">Veiksmai</th>
+          <?php } ?>
         </tr>
       </thead>
       <tbody>
@@ -156,11 +158,12 @@ $rezultatas = $prisijungimas->query($sql);
       echo '<td>'. $imones['aprasymas'].'</td>';
       // echo '<td>'. $imones['aprasymas'].'</td>'; 
 
-          
+      if($cookie_teises_id!=3) {    
       echo '<td>';
         echo "<a href='imonesredagavimas.php?ID=".$imones["ID"]."'>Redaguoti</a><br>"; 
         echo "<a href='imones.php?ID=".$imones["ID"]."'>Istrinti</a>";
       echo '</td>';
+      }
     echo '</tr>';
 }
    

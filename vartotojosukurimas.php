@@ -75,7 +75,7 @@ if(isset($_GET['prideti'])) {
 
         
         
-        $sql = "INSERT INTO `vartotojai`(`vardas`, `pavarde`, `slapyvardis`, `teises_id`, `slaptazodis`, `registracijos_data`, `paskutinis_prisijungimas`) VALUES ('$vardas','$pavarde','$slapyvardis', $teises_id, '$slaptazodis', '$registracijos_data', '$paskutinis_prisijungimas')";
+        $sql = "INSERT INTO `vartotojai`(`vardas`, `pavarde`, `slapyvardis`, `teises_id`, `slaptazodis`, `registracijos_data`, `paskutinis_prisijungimas`, `Registracia` ) VALUES ('$vardas','$pavarde','$slapyvardis', $teises_id, '$slaptazodis', '$registracijos_data', '$paskutinis_prisijungimas', 0)";
         if(mysqli_query($prisijungimas, $sql)) {
             $message = "Vartotojas pridėtas sėkmingai";
             $class = 'success';

@@ -64,15 +64,19 @@ if($rezultatas->num_rows == 1)  {
     
 
     if($teises_id == 1) {
-      header('Location: adminlogin.php'); 
-     
-      
+      header('Location: adminlogin.php');       
     }
    
     if($teises_id == 2) {
-      
-        header('Location: vadyblogin.php');
+       header('Location: vadyblogin.php');
     }
+
+    if($teises_id == 3) {
+       header('Location: inspektlogin.php');
+    }
+    if($teises_id == 4) {
+        header('Location: sysadminlogin.php');
+     }
 
     if($registracija == 1) {
         header("Location: 404.php");

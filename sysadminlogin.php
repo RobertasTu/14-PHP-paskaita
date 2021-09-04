@@ -8,7 +8,7 @@ require_once('connection.php');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administratoriaus puslapis</title>
+    <title>Sistemų administratoriaus puslapis</title>
 
     <?php require_once("includes.php"); ?>
     
@@ -56,7 +56,7 @@ require_once('connection.php');
     echo "<button class='btn btn-primary' type='submit' name='logout'>Logout</button>";
     echo "</form>";
     echo $date.'<br>';
-    echo 'Vartotojo_id: '.$cookie_id;
+    // echo 'Vartotojo_id: '.$cookie_id;
 
     
     $sql = "UPDATE `vartotojai`
@@ -73,7 +73,7 @@ require_once('connection.php');
 }  
     ?>
 
-    <h1>Administratoriaus puslapis</h1>
+    <h1>Sistemų administratoriaus puslapis</h1>
     <form action='adminlogin.php' method='get'>
     <div class='buttons'>
     <button class='btn btn-primary' type='submit' name='vartotojai'>Vartotojai</button>

@@ -8,7 +8,7 @@ require_once('connection.php');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administratoriaus puslapis</title>
+    <title>Vadybos puslapis</title>
 
     <?php require_once("includes.php"); ?>
     
@@ -73,10 +73,9 @@ require_once('connection.php');
 }  
     ?>
 
-    <h1>Administratoriaus puslapis</h1>
-    <form action='adminlogin.php' method='get'>
+    <h1>Vadybos puslapis</h1>
+    <form action='vadyblogin.php' method='get'>
     <div class='buttons'>
-    <button class='btn btn-primary' type='submit' name='vartotojai'>Vartotojai</button>
     <button class='btn btn-primary' type='submit' name='klientai'>Klientai</button>
     <button class='btn btn-primary' type='submit' name='imones'>Įmonės</button>
     </div>
@@ -92,9 +91,7 @@ require_once('connection.php');
         header('Location: klientai.php');
     }
 
-    if(isset($_GET['vartotojai'])) {
-        header('Location: vartotojai.php');
-    }
+   
     if(isset($_GET['imones'])) {
         header('Location: imones.php');
     }

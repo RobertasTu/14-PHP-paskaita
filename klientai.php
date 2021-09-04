@@ -65,8 +65,9 @@ if(!isset($_COOKIE["prisijungti"])) {
 
 ?>
 
-<?php if ( $cookie_teises_id==1) { ?>
+<?php if ( $cookie_teises_id==1 || $cookie_teises_id==2  || $cookie_teises_id==3 || $cookie_teises_id==4) { ?>
         <?php 
+        
         if(isset($_GET['ID'])) {
           $id = $_GET['ID'];
           $sql = "DELETE FROM `klientai` WHERE `ID` = $id";
@@ -79,20 +80,25 @@ if(!isset($_COOKIE["prisijungti"])) {
                   $class='danger';  
             }     
         }
-
+        
+      
         ?>
 
                   <?php if(isset($message)) { ?>
 
                       <div class='alert alert-<?php echo $class; ?>' role='alert'>
                       <?php echo $message; ?>
-                      </div>
+                      </div> 
                   <?php } ?>
+                  
+                  
 <div class='container'>
 <?php require_once("menu/includes.php"); ?>
 <?php if(isset($_GET["search"]) && !empty($_GET["search"])) { ?>
     <a class="btn btn-primary" href="klientai.php"> Išvalyti paiešką</a>
 <?php } ?>
+
+ 
   <h1>Klientai</h1>
  
   <form action="klientai.php" method="get">
@@ -115,11 +121,14 @@ if(!isset($_COOKIE["prisijungti"])) {
           <th scope="col">Vardas</th>
           <th scope="col">Pavarde</th>
           <th scope="col">Teises</th>
+          <?php if($cookie_teises_id!=3) { ?>
           <th scope="col">Veiksmai</th>
+          <?php } ?>
         </tr>
       </thead>
       <tbody>
-  <?php
+      
+  <?php 
 
 if(isset($_GET["rikiavimas_id"]) && !empty($_GET["rikiavimas_id"])) {
   $rikiavimas = $_GET["rikiavimas_id"];
@@ -173,28 +182,39 @@ $rezultatas = $prisijungimas->query($sql);
 //       } else {
 //           echo "<td>Nepatvirtintas klientas</td>";
 //       }  
-      
+if($cookie_teises_id!=3) {
       echo '<td>';
+      
         echo "<a href='klientoredagavimas.php?ID=".$klientai["ID"]."'>Redaguoti</a><br>"; 
         echo "<a href='klientai.php?ID=".$klientai["ID"]."'>Ištrinti</a>";
+      
       echo '</td>';
+}
     echo '</tr>';
 }
+
+
    
 
 
 
 ?>
+
  
   </tbody>
 </table>
 </div>
+
 
 </div>
  <?php } else {
  echo 'Neturite prieigos';
 }
 ?>
+
+
 </body>
+
+
 </html>
 
