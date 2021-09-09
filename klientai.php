@@ -131,7 +131,7 @@ if(!isset($_COOKIE["prisijungti"])) {
   <?php 
 
 if(isset($_GET["rikiavimas_id"]) && !empty($_GET["rikiavimas_id"]) && isset($_GET["page-limit"])) {
-  // $rikiavimas = $_GET["rikiavimas_id"];
+  $rikiavimas = $_GET["rikiavimas_id"];
   $page_limit = $_GET["page-limit"] * 30 - 30;
 } else {
   $rikiavimas = "DESC";
@@ -225,7 +225,7 @@ if($cookie_teises_id!=3) {
 
 <?php
 
-$sql = "SELECT CEILING(COUNT(ID)/30), COUNT(ID) FROM klientai";
+$sql = "SELECT CEILING(COUNT(ID)/30) AS puslapiu_skaicius, COUNT(ID) AS viso_klientai FROM klientai";
 $rezultatas = $prisijungimas->query($sql);  
 //Kiek irasu grazina sita uzklausa?
 //1 irasas
@@ -233,9 +233,9 @@ if($rezultatas->num_rows == 1) {
     $clients_total_pages = mysqli_fetch_array($rezultatas);
     // var_dump($clients_total_pages);
     
-    for($i = 1; $i <= intval($clients_total_pages[0]); $i++) {
+    for($i = 1; $i <= intval($clients_total_pages['puslapiu_slaicius']); $i++) {
         //Ar tikrai mes $i turim perduot?
-        echo "<a href='klientai.php?page-limit=$i'>";
+        echo "<a class='btn btn-primary' href='klientai.php?page-limit=$i'>";
             echo $i; //puslapio numeris
             echo " ";
         echo "</a>";
@@ -243,12 +243,12 @@ if($rezultatas->num_rows == 1) {
     
     echo "<p>";
     echo "Is viso puslapiu: ";
-    echo $clients_total_pages[0];
+    echo $clients_total_pages['puslapiu_slaicius'];
     echo "</p>";
 
     echo "<p>";
     echo "Is viso klientu: ";
-     echo $clients_total_pages[1];
+     echo $clients_total_pages['viso_klientai'];
     echo "</p>";
 }
 else {
