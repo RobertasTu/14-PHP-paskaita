@@ -107,16 +107,16 @@ if(!isset($_COOKIE["prisijungti"])) {
 </div>
 
 </form>
-
+<?php if($cookie_teises_id!=3) { ?>
 <a href='imonespildymoforma.php' class='btn btn-primary'>Pridėti naują įmonę</a>
- 
+ <?php } ?>
     <table class="table table-striped">
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Pavadinimas</th>
-          <th scope="col">Aprašymas</th>
-          <!-- <th scope="col">Tipas</th> -->
+          <th scope="col">Įmonės pavadinimas</th>
+          <th scope="col">Įmonės aprašymas</th>
+          <th scope="col">Įmonės tipas</th>
           <?php  if($cookie_teises_id!=3) { ?>
           <th scope="col">Veiksmai</th>
           <?php } ?>
@@ -130,7 +130,7 @@ if(isset($_GET["rikiavimas_id"]) && !empty($_GET["rikiavimas_id"])) {
 } else {
   $rikiavimas = "DESC";
 }
-$sql = "SELECT imones.ID, imones.pavadinimas, imones.aprasymas, imones_tipas.aprasymas
+$sql = "SELECT imones.ID, imones.pavadinimas AS imones_pavadinimas, imones.aprasymas AS imones_aprasymas, imones_tipas.aprasymas AS tipo_aprasymas
 FROM imones
 LEFT JOIN imones_tipas
 ON imones.tipas_ID = imones_tipas.ID  
@@ -140,7 +140,7 @@ ORDER BY imones.ID $rikiavimas";
 if(isset($_GET["search"]) && !empty($_GET["search"])) {
   $search = $_GET["search"];
 
-  $sql = "SELECT imones.ID, imones.pavadinimas, imones.tipas_ID, imones.aprasas, imones_tipas.aprasymas 
+  $sql = "SELECT imones.ID, imones.pavadinimas AS imones_pavadinimas, imones.tipas_ID, imones.aprasymas, imones_tipas.aprasymas AS tipo_aprasymas
   FROM imones
   LEFT JOIN imones_tipas ON imones.tipas_ID = imones_tipas.ID
 
@@ -154,9 +154,9 @@ $rezultatas = $prisijungimas->query($sql);
   while($imones = mysqli_fetch_array($rezultatas)) {
     echo '<tr>';
       echo '<td>'. $imones['ID'].'</td>';
-      echo '<td>'. $imones['pavadinimas'].'</td>';
-      echo '<td>'. $imones['aprasymas'].'</td>';
-      // echo '<td>'. $imones['aprasymas'].'</td>'; 
+      echo '<td>'. $imones['imones_pavadinimas'].'</td>';
+      echo '<td>'. $imones['imones_aprasymas'].'</td>';
+      echo '<td>'. $imones['tipo_aprasymas'].'</td>'; 
 
       if($cookie_teises_id!=3) {    
       echo '<td>';
