@@ -96,17 +96,76 @@ if(!isset($_COOKIE["prisijungti"])) {
 <?php } ?>
   <h1>Įmonės</h1>
 
+  <div class="row">
+  <div class="col-lg-12 col-md-12">
+        <h3>Filtravimas ir rikiavimas</h3>
+  
   <form action="imones.php" method="get">
 
 <div class="form-group">
+<select class="form-control" name="rikiuoti_pagal">
+      <?php
+            $sql = "SELECT * FROM `imones_rikiavimas`";
+
+            $rezultatas = $prisijungimas->query($sql); //vykdoma uzklausa
+
+            $rikiavimo_stulpelis = array();
+            $skaitiklis = 1;
+            while($sortColumns = mysqli_fetch_array($rezultatas)) {
+           if($skaitiklis == 1) {
+            $numatytoji_reiksme = $sortColumns["ID"]; //paskutine reiksme
+           }             
+              
+              if(isset($_GET["rikiuoti_pagal"]) && $_GET["rikiuoti_pagal"] == $sortColumns["ID"]) {
+                  echo "<option value='".$sortColumns["ID"]."' selected='true'>".$sortColumns["rikiavimo_pavadinimas"]."</option>";
+              } else {
+                  echo "<option value='".$sortColumns["ID"]."'>".$sortColumns["rikiavimo_pavadinimas"]."</option>";    
+              }
+              
+              $rikiavimo_stulpelis[$sortColumns["ID"]] =  $sortColumns["rikiavimo_stulpelis"];
+              
+              $skaitiklis++;
+          }            
+      ?>
+      </select>
+
     <select class="form-control" name="rikiavimas_id">
-        <option value="DESC"> Nuo didžiausio iki mažiausio</option>
-        <option value="ASC"> Nuo mažiausio iki didžiausio</option>
+    <?php if((isset($_GET["rikiavimas_id"]) && $_GET["rikiavimas_id"] == "DESC") || !isset($_GET["rikiavimas_id"]) ) {  ?>
+                      <option value="DESC" selected='true'> Nuo didžiausio iki mažiausio</option>
+                      <option value="ASC"> Nuo mažiausio iki didžiausio</option>
+        <?php } else {?>
+                       <option value="DESC"> Nuo didžiausio iki mažiausio</option>
+                        <option value="ASC" selected="true"> Nuo mažiausio iki didžiausio</option>
+               <?php } ?> 
     </select>
-    <button class="btn btn-primary" name="rikiuoti" type="submit">Rikiuoti</button>
+    <select class="form-control" name="filtravimas_id"> 
+            <?php if(isset($_GET["filtravimas_id"]) && !empty($_GET["filtravimas_id"]) && $_GET["filtravimas_id"] != "default") {?>
+                        <option value="default">Rodyti visus</option>
+        <?php } else {?>
+                        <option value="default" selected="true">Rodyti visus</option>
+        <?php } ?>  
+        <?php 
+                         $sql = "SELECT * FROM imones_tipas";
+                         $rezultatas = $prisijungimas->query($sql);
+
+                         while($companyType = mysqli_fetch_array($rezultatas)) {
+                            if(isset($_GET["filtravimas_id"]) && $_GET["filtravimas_id"] == $companyType["tipas_ID"] ) {
+                                echo "<option value='".$companyType["tipas_ID"]."' selected='true'>";
+                            } else  {
+                                echo "<option value='".$companyType["tipas_ID"]."'>";
+                            }
+                                echo $companyType["aprasymas"];
+                            echo "</option>";
+                        }
+                        ?>
+                        </select> 
+    <button class="btn btn-primary" name="filtruoti" type="submit">Vykdyti</button>
 </div>
 
 </form>
+<?php   if(isset($_GET["filtravimas_id"]) && !empty($_GET["filtravimas_id"]) && $_GET["filtravimas_id"] != "default") { ?>
+            <a class="btn btn-primary" href="imones.php">Išvalyti filtrą</a>
+        <?php } ?>
 <?php if($cookie_teises_id!=3) { ?>
 <a href='imonespildymoforma.php' class='btn btn-primary'>Pridėti naują įmonę</a>
  <?php } ?>
@@ -125,8 +184,31 @@ if(!isset($_COOKIE["prisijungti"])) {
       <tbody>
   <?php
 
-if(isset($_GET["rikiavimas_id"]) && !empty($_GET["rikiavimas_id"])) {
+$company_count = 30;
+$pagination_url = ""; 
+
+if(isset($_GET["page-limit"])) {
+  $page_limit = $_GET["page-limit"] * $company_count - $company_count;    
+} else {
+  $page_limit = 0;    
+} 
+
+if(isset($_GET["rikiuoti_pagal"]) && !empty($_GET["rikiuoti_pagal"])) {
+  $rikiuoti_pagal = $rikiavimo_stulpelis[$_GET["rikiuoti_pagal"]];
+  $pagination_url .= "&rikiuoti_pagal=". $_GET["rikiuoti_pagal"];
+} else {
+  $rikiuoti_pagal = $rikiavimo_stulpelis[$numatytoji_reiksme];
+}
+if(isset($_GET['filtravimas_id']) && !empty($_GET['filtravimas_id']) && $_GET['filtravimas_id'] !='default') {
+  $filtravimas = 'imones.tipas_id ='.$_GET['filtravimas_id'];
+  $pagination_url .= "&filtravimas_id=". $_GET["filtravimas_id"];
+   } else {
+     $filtravimas = 1;
+   }
+
+if(isset($_GET["rikiavimas_id"]) && !empty($_GET["rikiavimas_id"]) && isset($_GET["page-limit"])) {
   $rikiavimas = $_GET["rikiavimas_id"];
+  $pagination_url .= "&rikiavimas_id=". $_GET["rikiavimas_id"];
 } else {
   $rikiavimas = "DESC";
 }
@@ -134,8 +216,10 @@ $sql = "SELECT imones.ID, imones.pavadinimas AS imones_pavadinimas, imones.apras
 FROM imones
 LEFT JOIN imones_tipas
 ON imones.tipas_ID = imones_tipas.ID  
-WHERE 1
-ORDER BY imones.ID $rikiavimas";
+WHERE $filtravimas
+ORDER BY $rikiuoti_pagal $rikiavimas
+LIMIT $page_limit , $company_count
+";
 
 if(isset($_GET["search"]) && !empty($_GET["search"])) {
   $search = $_GET["search"];
@@ -145,7 +229,9 @@ if(isset($_GET["search"]) && !empty($_GET["search"])) {
   LEFT JOIN imones_tipas ON imones.tipas_ID = imones_tipas.ID
 
   WHERE imones.pavadinimas LIKE '%".$search."%' 
-  ORDER BY imones.ID $rikiavimas";
+  ORDER BY $rikiuoti_pagal $rikiavimas
+  LIMIT $page_limit , $company_count
+  ";
 }
 
 $rezultatas = $prisijungimas->query($sql);
@@ -174,6 +260,69 @@ $rezultatas = $prisijungimas->query($sql);
  
   </tbody>
 </table>
+<?php
+
+if(isset($_GET["search"]) && !empty($_GET["search"])) {
+  $page_filtering = "imones.pavadinimas LIKE '%".$search."%' OR imones.aprasymas 
+  LIKE '%".$search."%' AND $filtravimas";
+} else {
+  $page_filtering = $filtravimas;
+}
+
+
+$sql = "SELECT CEILING(COUNT(ID)/$company_count) AS puslapiu_skaicius, COUNT(ID) AS total_companies 
+FROM imones
+WHERE $page_filtering
+";
+$rezultatas = $prisijungimas->query($sql);  
+//Kiek irasu grazina sita uzklausa?
+//1 irasas
+if($rezultatas->num_rows == 1) { 
+    $company_total_pages = mysqli_fetch_array($rezultatas);
+    // var_dump($clients_total_pages);
+    
+    for($i = 1; $i <= intval($company_total_pages['puslapiu_skaicius']); $i++) {
+
+      if(!isset($_GET["page-limit"]) && $i==1) {
+        //Ar tikrai mes $i turim perduot?
+        echo "<a class='btn btn-primary' href='klientai.php?page-limit=$i$pagination_url'>";
+      } else if((isset($_GET["page-limit"]) && $_GET["page-limit"] == $i) )
+      {
+        echo "<a class='btn btn-primary active' href='imones.php?page-limit=$i$pagination_url'>";
+      } else {
+        echo "<a class='btn btn-primary' href='imones.php?page-limit=$i$pagination_url'>";
+      }
+            echo $i; //puslapio numeris
+            echo " ";
+        echo "</a>";
+    }
+    
+    echo "<p>";
+    echo "Iš viso puslapių: ";
+    echo $company_total_pages['puslapiu_skaicius'];
+    echo "</p>";
+
+    echo "<p>";
+    if (isset($_GET["page-limit"])) {
+        echo $_GET["page-limit"];
+    } else {
+        echo "1";
+    }
+    
+    echo " iš ";
+    echo $company_total_pages["puslapiu_skaicius"];
+    echo "</p>";
+
+    echo "<p>";
+    echo "Iš viso įmonių: ";
+     echo $company_total_pages['total_companies'];
+    echo "</p>";
+}
+else {
+    echo "Nepavyko suskaičiuoti įmonių";
+}
+?>
+
 </div>
 
 </div>

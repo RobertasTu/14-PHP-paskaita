@@ -228,7 +228,8 @@ if(isset($_GET["rikiavimas_id"]) && !empty($_GET["rikiavimas_id"]) && isset($_GE
 
 $sql = "SELECT klientai.ID, klientai.vardas, klientai.pavarde, klientai_teises.pavadinimas
 FROM klientai
-LEFT JOIN klientai_teises ON klientai_teises.reiksme = klientai.teises_id 
+LEFT JOIN klientai_teises 
+ON klientai_teises.reiksme = klientai.teises_id 
 WHERE $filtravimas
 ORDER BY $rikiuoti_pagal $rikiavimas
 LIMIT $page_limit , $clients_count
