@@ -182,15 +182,16 @@ if(isset($_GET["submit"])) {
                         ?>
                     </select>
     </div>
-    <div class='row'>
+    <!-- <div class='row'> -->
 
-     <div class="col-lg-12">
+     <!-- <div class="col-lg-12"> -->
+     <div class='form-group'>
          <label for='aprasymas'>Aprašymas</label>
-                            <textarea class="form-control" id="aprasymas" name="aprasymas">
-                                
+                            <textarea class="form-control summernote-aprasymas" type='text' name="aprasymas">
+                            <?php echo $klientas['aprasymas']; ?>  
                             </textarea>
                         </div>
-    </div>
+    <!-- </div> -->
 
 
 <a href='klientai.php'>Atgal</a><br>
@@ -210,6 +211,13 @@ if(isset($_GET["submit"])) {
     <?php } ?>
 
 </div>
+
+<script>
+    $(document).ready(function() {
+        $(".summernote-aprasymas").summernote();
+        
+    });
+</script>
 
 
     
