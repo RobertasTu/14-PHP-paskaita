@@ -230,8 +230,8 @@ $sql = "SELECT klientai.ID, klientai.vardas, klientai.pavarde, klientai_teises.p
 FROM klientai
 LEFT JOIN klientai_teises 
 ON klientai_teises.reiksme = klientai.teises_id 
-WHERE $filtravimas
-ORDER BY $rikiuoti_pagal $rikiavimas
+-- WHERE $filtravimas
+ORDER BY klientai.ID $rikiavimas
 LIMIT $page_limit , $clients_count
 ";
 
